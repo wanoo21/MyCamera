@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "module": "esnext",
+    "lib": [
+      "dom", "es2017"
+    ],
+    "target": "es2017",
+    "pretty": true,
+    "sourceMap": true
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}
