@@ -1,7 +1,8 @@
 {
   "name": "my-camera",
+  "description": "A simple web Component which shows your device camera, and allows you to record a video!",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server --mode=development",

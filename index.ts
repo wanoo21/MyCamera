@@ -88,18 +88,19 @@ customElements.define(
           });
         }
         this._error.remove();
-      } catch ({ name }) {
+      } catch (error) {
         this._video.remove();
         this._record.remove();
-        if (name === 'ConstraintNotSatisfiedError') {
+        if (error.name === 'ConstraintNotSatisfiedError') {
           this._error.innerText =
             'The resolution is not supported by your device.';
-        } else if (name === 'NotAllowedError') {
+        } else if (error.name === 'NotAllowedError') {
           this._error.innerText =
             'Permissions have not been granted to use your camera and ' +
             'microphone, you need to allow the page access to your devices in ' +
             'order for the demo to work.';
         }
+        throw Error(error)
         // this._shadow.appendChild(this._error);
       }
     }
