@@ -1,4 +1,5 @@
-const MediaRecorder = require('audio-recorder-polyfill');
+const MediaRecorder =
+  window.MediaRecorder || require('audio-recorder-polyfill');
 
 customElements.define(
   'my-camera',
@@ -40,7 +41,7 @@ customElements.define(
     }
 
     private _startRecording() {
-      this._recorder.start(100);
+      this._recorder.start(1000);
     }
 
     private _stopRecording() {
