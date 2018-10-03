@@ -29,6 +29,7 @@ There's also ability to record stream and download.">
     h1 {
       text-transform: uppercase;
       margin-bottom: 0;
+      text-align: center;
     }
 
     h2 {
@@ -42,6 +43,13 @@ There's also ability to record stream and download.">
     my-camera {
       height: 50vh;
       width: 50vw;
+    }
+
+    @media only screen and (max-width: 600px) {
+      my-camera {
+        width: calc(100vw - 2em);
+        margin: 1em;
+      }
     }
   </style>
 </head>
