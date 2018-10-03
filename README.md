@@ -1,5 +1,7 @@
 # My Camera
 
+[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/my-camera)
+
 Simple component based on JS custom elements, which allow you to get access to your current device camera.
 
 There's also ability to record stream and download.
@@ -23,6 +25,17 @@ Or include stright in your index.html
 ```
 
 ## Usage
+
+<!--
+```
+<custom-element-demo>
+  <template>
+    <script type="text/javascript" src="https://mycam.netlify.com/my-camera.js"></script>
+    <my-camera controls autoplay audio record></my-camera>
+  </template>
+</custom-element-demo>
+```
+-->
 
 ```html
 <my-camera controls autoplay audio record></my-camera>
