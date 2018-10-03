@@ -43,13 +43,20 @@ There's also ability to record stream and download.">
       height: 50vh;
       width: 50vw;
     }
+
+    @media only screen and (max-width: 600px) {
+      my-camera {
+        width: calc(100vw - 2em);
+        margin: 1em;
+      }
+    }
   </style>
 </head>
 
 <body>
   <h1>My Camera Web component</h1>
   <h2>Use record button to record a video</h2>
-  <my-camera autoplay controls audio record></my-camera>
+  <my-camera autoplay controls audio></my-camera>
   <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.0.0/webcomponents-bundle.js"></script>
   <style>
     my-camera {

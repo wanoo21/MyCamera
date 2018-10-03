@@ -64,8 +64,17 @@ customElements.define(
     }
 
     private _cameraStream() {
+      if (!navigator.mediaDevices.getUserMedia) {
+        return Promise.reject(
+          new Error('getUserMedia is not implemented in this browser')
+        );
+      }
       return navigator.mediaDevices.getUserMedia({
-        video: true,
+        video: {
+          width: { min: 320, ideal: 1280, max: 1920 },
+          height: { min: 240, ideal: 720, max: 1080 },
+          facingMode: 'user'
+        },
         audio: this.hasAttribute('audio')
       });
     }
@@ -163,7 +172,7 @@ customElements.define(
           }
 
         </style>
-        <video></video>
+        <video playsinline></video>
         <p class="error"></p>
         <div class="custom-controls">
           <button class="record">Record</button>
