@@ -1,4 +1,4 @@
-declare var MediaRecorder: any;
+const MediaRecorder = require('audio-recorder-polyfill');
 
 customElements.define(
   'my-camera',
