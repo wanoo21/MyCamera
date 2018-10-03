@@ -26,17 +26,6 @@ Or include stright in your index.html
 
 ## Usage
 
-<!--
-```
-<custom-element-demo>
-  <template>
-    <script type="text/javascript" src="https://mycam.netlify.com/my-camera.js"></script>
-    <my-camera controls autoplay audio record></my-camera>
-  </template>
-</custom-element-demo>
-```
--->
-
 ```html
 <my-camera controls autoplay audio record></my-camera>
 ```
