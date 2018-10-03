@@ -6,7 +6,21 @@ There's also ability to record stream and download.
 
 ## Installation
 
-TODO: Describe the installation process
+```bash
+npm install my-camera
+```
+
+And include somewhere in your app:
+
+```js
+@import 'my-camera'
+```
+
+Or include stright in your index.html
+
+```html
+<script rel="import" src="node_modules/dist/my-camera.js"></script>
+```
 
 ## Usage
 

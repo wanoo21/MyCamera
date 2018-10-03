@@ -1,8 +1,18 @@
 {
   "name": "my-camera",
   "description": "A simple web Component which shows your device camera, and allows you to record a video!",
-  "version": "1.0.0",
+  "version": "1.0.11",
   "main": "dist/index.js",
+  "homepage": "https://mycam.netlify.com/",
+  "author": {
+    "name": "Ion Prodan",
+    "email": "ionprodan33@gmail.com",
+    "url": "https://yon.fun"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wanoo21/MyCamera"
+  },
   "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server --mode=development",
@@ -16,5 +26,10 @@
     "webpack": "^4.20.2",
     "webpack-cli": "^3.1.1",
     "webpack-dev-server": "^3.1.9"
-  }
+  },
+  "keywords": [
+    "my camera",
+    "devices",
+    "web component"
+  ]
 }
