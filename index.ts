@@ -1,5 +1,4 @@
-const MediaRecorder =
-  window.MediaRecorder || require('audio-recorder-polyfill');
+const MediaStreamRecorder = require('msr');
 
 customElements.define(
   'my-camera',
@@ -8,8 +7,8 @@ customElements.define(
     private _video: HTMLVideoElement;
     private _error: HTMLParagraphElement;
     private _record: HTMLButtonElement;
+    private _pauseRecord: HTMLButtonElement;
     private _recorder: any;
-    private _recordedChunks: Blob[] = [];
     constructor() {
       super();
 
@@ -18,19 +17,32 @@ customElements.define(
       this._video = this._shadow.querySelector('video');
       this._error = this._shadow.querySelector('p');
       this._record = this._shadow.querySelector('button.record');
+      this._pauseRecord = this._shadow.querySelector('button.pause-record');
 
       if (!this.hasAttribute('record')) {
         this._record.remove();
+        this._pauseRecord.remove();
       } else {
         this._record.addEventListener('click', () => {
           if (!this._record.hasAttribute('recording')) {
-            this._record.innerText = 'Recording ...';
+            this._record.innerText = 'Stop & Save';
             this._record.setAttribute('recording', '');
             return this._startRecording();
           } else {
             this._record.innerText = 'Record';
             this._record.removeAttribute('recording');
             return this._stopRecording();
+          }
+        });
+        this._pauseRecord.addEventListener('click', () => {
+          if (!this._pauseRecord.hasAttribute('resume')) {
+            this._pauseRecord.innerText = 'Resume record';
+            this._pauseRecord.setAttribute('resume', '');
+            return this._pauseRecording();
+          } else {
+            this._pauseRecord.innerText = 'Pause record';
+            this._pauseRecord.removeAttribute('resume');
+            return this._resumeRecording();
           }
         });
       }
@@ -41,27 +53,32 @@ customElements.define(
     }
 
     private _startRecording() {
-      this._recorder.start(1000);
+      this._pauseRecord.removeAttribute('hidden');
+      this._recorder.start(100);
     }
 
     private _stopRecording() {
+      this._pauseRecord.setAttribute('hidden', '');
+      this._pauseRecord.removeAttribute('resume');
       this._recorder.stop();
-      const url = URL.createObjectURL(
-        new Blob(this._recordedChunks, {
-          type: this._recorder.mimeType
-        })
+    }
+
+    private _pauseRecording() {
+      this._record.setAttribute('disabled', '');
+      this._recorder.pause();
+    }
+
+    private _resumeRecording() {
+      this._record.removeAttribute('disabled');
+      this._recorder.resume();
+    }
+
+    private _saveVideo(blob: Blob) {
+      const type = blob.type.split('/').pop();
+      this._recorder.save(
+        blob,
+        `my-camera-${new Date().toISOString().replace(/:|\./g, '-')}.${type}`
       );
-      const link = this._shadow.ownerDocument.createElement('a');
-      link.style.display = 'none';
-      link.href = url;
-      link.download = `my-camera-record-${this._recordedChunks.length}.webm`;
-      this._shadow.appendChild(link);
-      link.click();
-      setTimeout(() => {
-        this._recordedChunks = [];
-        this._shadow.removeChild(link);
-        URL.revokeObjectURL(url);
-      }, 100);
     }
 
     private _cameraStream() {
@@ -90,17 +107,15 @@ customElements.define(
         this._video.srcObject = await this._cameraStream();
         this._addVideoAtributes();
         if (this.hasAttribute('record')) {
-          this._recorder = new MediaRecorder(this._video.srcObject, {
-            mimeType: 'video/webm'
-          });
-          this._recorder.addEventListener('dataavailable', ({ data }) => {
-            this._recordedChunks.push(data);
-          });
+          this._recorder = new MediaStreamRecorder(this._video.srcObject);
+          // this._recorder.mimeType = 'video/webm';
+          this._recorder.ondataavailable = this._saveVideo.bind(this);
         }
         this._error.remove();
       } catch (error) {
         this._video.remove();
         this._record.remove();
+        this._pauseRecord.remove();
         if (error.name === 'ConstraintNotSatisfiedError') {
           this._error.innerText =
             'The resolution is not supported by your device.';
@@ -138,15 +153,21 @@ customElements.define(
       return `
         <style>
           :host {
+            height: var(--height, 400px);
+            width: var(--width, 400px);
+          }
+
+          #wrapper {
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
             position: relative;
             background-color: var(--background-color, #ccc);
-            height: var(--height, 400px);
-            width: var(--width, 400px);
+            width: 100%;
+            height: 100%;
           }
+
 
           video {
             width: 100%;
@@ -163,8 +184,7 @@ customElements.define(
 
           .custom-controls {
             top: 8px;
-            left: 8px;
-            width: 100%;
+            right: 8px;
             position: absolute;
           }
 
@@ -172,11 +192,18 @@ customElements.define(
             padding: 8px 10px;
           }
 
+          [hidden] {
+            display: none;
+          }
+
         </style>
-        <video playsinline></video>
-        <p class="error"></p>
-        <div class="custom-controls">
-          <button class="record">Record</button>
+        <div id="wrapper">
+          <video></video>
+          <p class="error"></p>
+          <div class="custom-controls">
+            <button class="record">Record</button>
+            <button class="pause-record" hidden>Pause record</button>
+          </div>
         </div>
       `;
     }
