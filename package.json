@@ -1,7 +1,7 @@
 {
   "name": "my-camera",
   "description": "A simple web Component which shows your device camera, and allows you to record a video!",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "main": "dist/index.js",
   "homepage": "https://mycam.netlify.com/",
   "author": {

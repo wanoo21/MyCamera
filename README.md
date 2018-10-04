@@ -6,6 +6,8 @@ Simple component based on JS custom elements, which allow you to get access to y
 
 There's also ability to record stream and download.
 
+**Not compatilbe with some browsers, do not use it in production**
+
 ## Installation
 
 ```bash
